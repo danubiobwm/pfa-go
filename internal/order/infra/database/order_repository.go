@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/danubiobwm/pfa-go/internal/order/entity"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type OrderRepository struct {
