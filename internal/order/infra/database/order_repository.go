@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 
-	"github.com/danubiobwm/pfa-go/internal/order/entity"
+	"github.com/devfullcycle/pfa-go/internal/order/entity"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -15,9 +15,17 @@ func NewOrderRepository(db *sql.DB) *OrderRepository {
 	return &OrderRepository{Db: db}
 }
 
-func (r *OrderRepository) Save(order *entity.Order) error {
-	stmt, err := r.Db.Prepare("INSERT INTO order (id, price, tax, final_price) VALUES (?,?,?,?)")
+// sql create table on mysql
+// CREATE TABLE `orders` (
+//   `id` varchar(255) NOT NULL,
+//   `price` float NOT NULL,
+//   `tax` float NOT NULL,
+//   `final_price` float NOT NULL,
+//   PRIMARY KEY (`id`))
+// )
 
+func (r *OrderRepository) Save(order *entity.Order) error {
+	stmt, err := r.Db.Prepare("INSERT INTO orders (id, price, tax, final_price) VALUES (?, ?, ?, ?)")
 	if err != nil {
 		return err
 	}
@@ -26,4 +34,13 @@ func (r *OrderRepository) Save(order *entity.Order) error {
 		return err
 	}
 	return nil
+}
+
+func (r *OrderRepository) GetTotal() (int, error) {
+	var total int
+	err := r.Db.QueryRow("SELECT COUNT(*) FROM orders").Scan(&total)
+	if err != nil {
+		return 0, err
+	}
+	return total, nil
 }

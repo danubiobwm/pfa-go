@@ -4,6 +4,7 @@ import "errors"
 
 type OrderRepositoryInterface interface {
 	Save(order *Order) error
+	GetTotal() (int, error)
 }
 
 type Order struct {
@@ -19,13 +20,14 @@ func NewOrder(id string, price float64, tax float64) (*Order, error) {
 		Price: price,
 		Tax:   tax,
 	}
-	if err := order.IsValid(); err != nil {
+	err := order.IsValid()
+	if err != nil {
 		return nil, err
 	}
 	return order, nil
 }
 
-func (o *Order) CalculteFinalPrice() error {
+func (o *Order) CalculateFinalPrice() error {
 	o.FinalPrice = o.Price + o.Tax
 	err := o.IsValid()
 	if err != nil {
@@ -34,7 +36,7 @@ func (o *Order) CalculteFinalPrice() error {
 	return nil
 }
 
-func (o *Order) IsValid() error {
+func (o Order) IsValid() error {
 	if o.ID == "" {
 		return errors.New("invalid id")
 	}

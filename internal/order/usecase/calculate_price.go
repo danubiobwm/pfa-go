@@ -1,6 +1,6 @@
 package usecase
 
-import "github.com/danubiobwm/pfa-go/internal/order/entity"
+import "github.com/devfullcycle/pfa-go/internal/order/entity"
 
 type OrderInputDTO struct {
 	ID    string
@@ -20,18 +20,15 @@ type CalculateFinalPriceUseCase struct {
 }
 
 func NewCalculateFinalPriceUseCase(orderRepository entity.OrderRepositoryInterface) *CalculateFinalPriceUseCase {
-	return &CalculateFinalPriceUseCase{
-		OrderRepository: orderRepository,
-	}
+	return &CalculateFinalPriceUseCase{OrderRepository: orderRepository}
 }
 
 func (c *CalculateFinalPriceUseCase) Execute(input OrderInputDTO) (*OrderOutputDTO, error) {
 	order, err := entity.NewOrder(input.ID, input.Price, input.Tax)
-
 	if err != nil {
 		return nil, err
 	}
-	err = order.CalculteFinalPrice()
+	err = order.CalculateFinalPrice()
 	if err != nil {
 		return nil, err
 	}

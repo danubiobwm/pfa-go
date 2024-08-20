@@ -14,7 +14,6 @@ func main() {
 	var db *sql.DB
 	var err error
 
-	// MySQL connection string format: "user:password@tcp(host:port)/dbname"
 	dsn := "root:root@tcp(mysql:3306)/orders"
 
 	for i := 0; i < 10; i++ {
@@ -34,7 +33,13 @@ func main() {
 	}
 	defer db.Close()
 
-	repository := database.NewOrderRepository(db) // Ensure this is compatible with MySQL
+	// Initialize the database
+	err = database.InitializeDB(db)
+	if err != nil {
+		panic(err)
+	}
+
+	repository := database.NewOrderRepository(db)
 	uc := usecase.NewCalculateFinalPriceUseCase(repository)
 
 	input := usecase.OrderInputDTO{
