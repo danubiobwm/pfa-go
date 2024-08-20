@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/danubiobwm/pfa-go/internal/order/infra/database"
-	"github.com/danubiobwm/pfa-go/internal/order/usecase"
+	"github.com/devfullcycle/pfa-go/internal/order/infra/database"
+	"github.com/devfullcycle/pfa-go/internal/order/usecase"
 	_ "github.com/go-sql-driver/mysql"
 )
 
